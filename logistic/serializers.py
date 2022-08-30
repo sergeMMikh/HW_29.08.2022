@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Product, StockProduct, Stock
 
+
 class ProductSerializer(serializers.ModelSerializer):
     # настройте сериализатор для продукта
     class Meta:
@@ -12,20 +13,23 @@ class ProductPositionSerializer(serializers.ModelSerializer):
     # настройте сериализатор для позиции продукта на складе
     class Meta:
         model = StockProduct
-        fields = ['stock', 'product', 'quantity', 'price']
+        fields = ['product', 'quantity', 'price']
+        #fields = '__all__'
 
 
 class StockSerializer(serializers.ModelSerializer):
+    print(f'position: {3}')
     positions = ProductPositionSerializer(many=True)
 
     # настройте сериализатор для склада
     class Meta:
         model = Stock
-        fields = ['address', 'products', 'positions']
-
+        fields = ['address', "positions"]
 
     def create(self, validated_data):
+        print(f'validated_data: {validated_data}')
         # достаем связанные данные для других таблиц
+
         positions = validated_data.pop('positions')
         print(f'positions: {positions}')
 
@@ -37,13 +41,10 @@ class StockSerializer(serializers.ModelSerializer):
         # с помощью списка positions
 
         for position in positions:
-            StockProduct.objects.create(stock=stock.pk,
-                                        product=position.get('product'),
-                                        quantity=position.get('quantity'),
-                                        price=position.get('price'),)
+            print(f'position: {position}')
+            StockProduct.objects.create(stock=stock, **position)
 
         return stock
-
 
 
     def update(self, instance, validated_data):
@@ -57,4 +58,5 @@ class StockSerializer(serializers.ModelSerializer):
         # в нашем случае: таблицу StockProduct
         # с помощью списка positions
 
-        return stock
+        # return stock
+        return {'status': 'Ok'}
