@@ -1,3 +1,15 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Product, StockProduct, Stock
+
+@admin.register(Product)
+class ArticleAdmin(admin.ModelAdmin):
+    ...
+
+@admin.register(StockProduct)
+class ArticleAdmin(admin.ModelAdmin):
+    ...
+
+@admin.register(Stock)
+class ArticleAdmin(admin.ModelAdmin):
+    ...
