@@ -12,7 +12,5 @@ class ProductViewSet(ModelViewSet):
 
 class StockViewSet(ModelViewSet):
     queryset = Stock.objects.all()
-    print(f'positio1n: {1}')
     serializer_class = StockSerializer
-    print(f'positio2n: {2}')
     # при необходимости добавьте параметры фильтрации

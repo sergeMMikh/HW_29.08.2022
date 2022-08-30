@@ -18,7 +18,6 @@ class ProductPositionSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
-    print(f'position: {3}')
     positions = ProductPositionSerializer(many=True)
 
     # настройте сериализатор для склада
@@ -58,5 +57,4 @@ class StockSerializer(serializers.ModelSerializer):
         # в нашем случае: таблицу StockProduct
         # с помощью списка positions
 
-        # return stock
-        return {'status': 'Ok'}
+        return stock
