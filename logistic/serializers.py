@@ -55,8 +55,17 @@ class StockSerializer(serializers.ModelSerializer):
         # с помощью списка positions
 
         for position in positions:
-            StockProduct.objects.update_or_create(stock=stock, **position,
-                                                  defaults={'quantity': position.get('quantity'),
-                                                            'price': position.get('price')})
+            try:
+                obj = StockProduct.objects.get(stock=stock, price=position.get('price'))
+                setattr(obj, 'quantity', position.get('quantity'))
+                setattr(obj, 'price', position.get('price'))
+                print('Found')
+                obj.save()
+            except StockProduct.DoesNotExist:
+                StockProduct.objects.create(stock=stock, **position)
+
+            # StockProduct.objects.update_or_create(stock=stock, **position,
+            #                                       defaults={'quantity': position.get('quantity'),
+            #                                                 'price' :position.get('price')})
 
         return stock
