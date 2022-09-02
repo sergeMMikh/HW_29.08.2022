@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import UniqueConstraint
 
 
 class Product(models.Model):
@@ -33,3 +34,10 @@ class StockProduct(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0)],
     )
+
+    class Meta:
+        constraints = [UniqueConstraint(name='unique_stock',
+                                        fields=['stock',
+                                                'product',
+                                                'quantity',
+                                                'price'])]
