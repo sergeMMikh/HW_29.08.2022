@@ -59,7 +59,6 @@ class StockSerializer(serializers.ModelSerializer):
                 obj = StockProduct.objects.get(stock=stock, price=position.get('price'))
                 setattr(obj, 'quantity', position.get('quantity'))
                 setattr(obj, 'price', position.get('price'))
-                print('Found')
                 obj.save()
             except StockProduct.DoesNotExist:
                 StockProduct.objects.create(stock=stock, **position)
